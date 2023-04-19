@@ -1,2 +1,1 @@
 # movie-analyst-infrastructure
-test
