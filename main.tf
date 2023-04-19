@@ -11,7 +11,7 @@ module "vpc" {
   create_nat = true
 
   #VPC
-  name       = "Diego-movie-analyst"
+  name       = "Hollman-movie-analyst"
   cidr_block = "10.0.0.0/16"
 
   #Subnet
@@ -30,7 +30,7 @@ data "http" "myip" {
 module "security_group_bastion" {
   source = "./modules/security/"
 
-  name                 = "Diego-bastion-sg"
+  name                 = "Hollman-bastion-sg"
   description          = "This security group is used for the bastion host and allows access to jenkins by port 8080"
   vpc_id               = module.vpc.vpc_id
   from_port_cidr_block = [22, 8080]
@@ -42,7 +42,7 @@ module "security_group_bastion" {
 module "security_group_frontend_lb" {
   source = "./modules/security/"
 
-  name                 = "Diego-frontend-lb-sg"
+  name                 = "Hollman-frontend-lb-sg"
   description          = "This security group is used for the fronted load balancer and allows access by 0.0.0.0/80"
   vpc_id               = module.vpc.vpc_id
   from_port_cidr_block = [80]
@@ -55,7 +55,7 @@ module "security_group_frontend_lb" {
 module "security_group_frontend" {
   source = "./modules/security/"
 
-  name                     = "Diego-frontend-sg"
+  name                     = "Hollman-frontend-sg"
   description              = "This security group is used for the fronted and allows access by frontend-lb and bastion-sg"
   vpc_id                   = module.vpc.vpc_id
   from_port_sg_id          = [22, 3030]
@@ -68,7 +68,7 @@ module "security_group_frontend" {
 module "security_group_backend" {
   source = "./modules/security/"
 
-  name                     = "Diego-backend-sg"
+  name                     = "Hollman-backend-sg"
   description              = "This security group is used for the backend and allows access by frontend-sg and bastion-sg"
   vpc_id                   = module.vpc.vpc_id
   from_port_sg_id          = [22, 3000]
@@ -81,7 +81,7 @@ module "security_group_backend" {
 module "security_group_rds" {
   source = "./modules/security/"
 
-  name                     = "Diego-rds-sg"
+  name                     = "Hollman-rds-sg"
   description              = "This security group is used for the rds and allows access by backend-sg and bastion-sg"
   vpc_id                   = module.vpc.vpc_id
   from_port_sg_id          = [3306, 3306]
@@ -97,12 +97,12 @@ locals {
 }
 
 resource "aws_db_subnet_group" "this" {
-  name_prefix = "diego-movie-analyst-rds"
+  name_prefix = "Hollman-movie-analyst-rds"
   subnet_ids  = concat(module.vpc.public_subnet_ids, module.vpc.private_subnet_ids)
 
   tags = merge(
     {
-      "Name" = format("%s", "Diego-movie-analyst-rds")
+      "Name" = format("%s", "Hollman-movie-analyst-rds")
     },
     var.tags,
   )
@@ -113,7 +113,7 @@ resource "aws_db_instance" "mysql" {
   engine         = "mysql"
   engine_version = "8.0.32"
 
-  identifier = "diego-movie-analyst-rds"
+  identifier = "Hollman-movie-analyst-rds"
   username   = "applicationuser"
   password   = "applicationuser"
 
@@ -132,7 +132,7 @@ resource "aws_db_instance" "mysql" {
 
   tags = merge(
     {
-      "Name" = format("%s", "Diego-movie-analyst-rds")
+      "Name" = format("%s", "Hollman-movie-analyst-rds")
     },
     var.tags,
   )
@@ -141,7 +141,7 @@ resource "aws_db_instance" "mysql" {
 module "ec2_bastion" {
   source = "./modules/ec2/"
 
-  name = "Diego-bastion-ec2"
+  name = "Hollman-bastion-ec2"
 
   ami           = "ami-06e46074ae430fba6"
   instance_type = "t2.micro"
@@ -159,7 +159,7 @@ module "ec2_bastion" {
 module "ec2_public" {
   source = "./modules/ec2/"
 
-  name = "Diego-frontend-ec2"
+  name = "Hollman-frontend-ec2"
 
   ami           = "ami-06e46074ae430fba6" 
   instance_type = "t2.micro"
@@ -177,7 +177,7 @@ module "ec2_public" {
 module "ec2_backend" {
   source = "./modules/ec2/"
 
-  name = "Diego-backend-ec2"
+  name = "Hollman-backend-ec2"
 
   ami           = "ami-06e46074ae430fba6"
   instance_type = "t2.micro"
@@ -229,7 +229,7 @@ EOF
 module "load_balancer" {
   source = "./modules/load_balancer/"
 
-  name = "Diego-frontend"
+  name = "Hollman-frontend"
 
   internal           = false
   load_balancer_type = "application"

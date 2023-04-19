@@ -3,7 +3,7 @@ variable "secret_key" {}
 variable "tags" {
   type = map(string)
   default = {
-    created_by    = "Diego Arroyo"
+    created_by    = "Hollman Arroyo"
     creation_date = "22/02/2021"
     project_name  = "Ramp-Up"
     stop          = "stop"
