@@ -1,9 +1,9 @@
-variable "access_key" {}
-variable "secret_key" {}
+#variable "access_key" {}
+#variable "secret_key" {}
 variable "tags" {
   type = map(string)
   default = {
-    created_by    = "Hollman Arroyo"
+    created_by    = "hollman Arroyo"
     creation_date = "22/02/2021"
     project_name  = "Ramp-Up"
     stop          = "stop"
