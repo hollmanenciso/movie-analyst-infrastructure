@@ -1,7 +1,5 @@
 provider "aws" {
   region     = "us-east-1"
-  #access_key = "${var.AWS_ACCESS_KEY_ID}"
-  #secret_key = "${var.AWS_SECRET_ACCESS_KEY}"
 }
 
 module "vpc" {
@@ -39,6 +37,7 @@ module "security_group_bastion" {
   cidr_block           = [format("%s/%s", chomp(data.http.myip.body), "32"), format("%s/%s", chomp(data.http.myip.body), "32")]
   tags                 = var.tags
 }
+
 module "security_group_frontend_lb" {
   source = "./modules/security/"
 
@@ -122,7 +121,7 @@ resource "aws_db_instance" "mysql" {
   storage_type      = "gp2"
   allocated_storage = "20"
 
-  multi_az = "false"
+  multi_az = "true"
 
   db_subnet_group_name   = local.db_subnet_group
   publicly_accessible    = false
@@ -156,6 +155,7 @@ module "ec2_bastion" {
 
   tags = var.tags
 }
+
 module "ec2_public" {
   source = "./modules/ec2/"
 
@@ -174,6 +174,7 @@ module "ec2_public" {
 
   tags = var.tags
 }
+
 module "ec2_backend" {
   source = "./modules/ec2/"
 
@@ -226,6 +227,7 @@ EOF
 
   tags = var.tags
 }
+
 module "load_balancer" {
   source = "./modules/load_balancer/"
 
