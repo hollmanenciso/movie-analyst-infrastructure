@@ -94,6 +94,7 @@ env:
 jobs:
   terraform:
     name: 'Terraform'
+    if: github.event.pull_request.merged == false
     runs-on: ubuntu-latest
     environment: production
 
@@ -134,7 +135,7 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-    
+
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
