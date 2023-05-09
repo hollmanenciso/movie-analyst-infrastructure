@@ -92,8 +92,11 @@ jobs:
         run: terraform init
       - name: Terraform Plan
         run: terraform plan
-      - name: Wait for Approval
-        id: approval
-        uses: tholl/wait-for-approval@v1
+      - name: Manual Workflow Approval
+        uses: trstringer/manual-approval@v1.9.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-title: "Deploying to prod from development"
+          minimum-approvals: 1
       - name: Terraform Apply
         run: terraform apply -auto-approve
