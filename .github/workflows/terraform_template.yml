@@ -52,7 +52,8 @@ jobs:
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: production
- 
+    if: github.ref != 'refs/heads/main'
+
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
@@ -91,5 +92,8 @@ jobs:
         run: terraform init
       - name: Terraform Plan
         run: terraform plan
+      - name: Wait for Approval
+        id: approval
+        uses: tholl/wait-for-approval@v1
       - name: Terraform Apply
         run: terraform apply -auto-approve
