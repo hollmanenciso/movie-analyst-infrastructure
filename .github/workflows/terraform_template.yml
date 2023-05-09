@@ -52,8 +52,7 @@ name: 'Terraform'
 on:
   push:
     branches:
-      - '*'
-      - '!master'
+      - '*' # Push events to all branches
 
 permissions:
   contents: read
