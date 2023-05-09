@@ -121,7 +121,7 @@ resource "aws_db_instance" "mysql" {
   storage_type      = "gp2"
   allocated_storage = "20"
 
-  multi_az = "true"
+  multi_az = "false"
 
   db_subnet_group_name   = local.db_subnet_group
   publicly_accessible    = false
