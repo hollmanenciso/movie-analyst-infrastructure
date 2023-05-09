@@ -3,10 +3,8 @@
 variable "tags" {
   type = map(string)
   default = {
-    created_by    = "hollman Arroyo"
-    creation_date = "22/02/2021"
+    created_by    = "hollman"
     project_name  = "Ramp-Up"
-    stop          = "stop"
   }
 }
 variable "user_data_bastion" {

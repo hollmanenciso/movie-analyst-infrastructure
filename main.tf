@@ -1,5 +1,5 @@
 provider "aws" {
-  region     = "us-east-1"
+  region = "us-east-1"
 }
 
 module "vpc" {
@@ -109,25 +109,21 @@ resource "aws_db_subnet_group" "this" {
 
 resource "aws_db_instance" "mysql" {
 
-  engine         = "mysql"
-  engine_version = "8.0.32"
-
-  identifier = "hollman-movie-analyst-rds"
-  username   = "applicationuser"
-  password   = "applicationuser"
-
-  instance_class = "db.t2.micro"
-
-  storage_type      = "gp2"
-  allocated_storage = "20"
-
-  multi_az = "false"
-
+  engine                 = "mysql"
+  engine_version         = "8.0.32"
+  identifier             = "hollman-movie-analyst-rds"
+  username               = "applicationuser"
+  password               = "applicationuser"
+  instance_class         = "db.t2.micro"
+  storage_type           = "gp2"
+  allocated_storage      = "20"
+  multi_az               = "false"
   db_subnet_group_name   = local.db_subnet_group
   publicly_accessible    = false
   vpc_security_group_ids = [module.security_group_rds.sg_id]
   availability_zone      = "us-east-1a"
   port                   = 3306
+  skip_final_snapshot    = true
 
   tags = merge(
     {
@@ -161,7 +157,7 @@ module "ec2_public" {
 
   name = "hollman-frontend-ec2"
 
-  ami           = "ami-06e46074ae430fba6" 
+  ami           = "ami-06e46074ae430fba6"
   instance_type = "t2.micro"
 
   subnet_ids                  = module.vpc.public_subnet_ids
