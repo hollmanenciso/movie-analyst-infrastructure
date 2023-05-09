@@ -10,10 +10,6 @@ on:
     branches:
      - '*'
      
-  pull_requests:
-    branches:
-     - main
- 
 permissions:
   contents: read
  
