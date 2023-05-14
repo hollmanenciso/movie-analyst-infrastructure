@@ -21,9 +21,9 @@ module "vpc" {
   tags = var.tags
 }
 
-data "http" "myip" {
-  url = "https://ipv4.icanhazip.com"
-}
+#data "http" "myip" {
+#  url = "https://ipv4.icanhazip.com"
+#}
 
 module "security_group_bastion" {
   source = "./modules/security/"
