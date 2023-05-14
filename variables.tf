@@ -3,10 +3,11 @@
 variable "tags" {
   type = map(string)
   default = {
-    created_by    = "hollman"
-    project_name  = "Ramp-Up"
+    created_by   = "hollman"
+    project_name = "Ramp-Up"
   }
 }
+
 variable "user_data_bastion" {
   default = <<EOF
 #!/bin/bash
@@ -24,6 +25,7 @@ sudo apt-get update && sudo apt-get install -y terraform
 #sudo systemctl start jenkins
 EOF
 }
+
 variable "user_data_frontend" {
   default = <<EOF
 #!/bin/bash
@@ -32,6 +34,7 @@ curl -sL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 sudo apt-get install -y nodejs
 EOF
 }
+
 variable "user_data_backend" {
   default = <<EOF
 #!/bin/bash

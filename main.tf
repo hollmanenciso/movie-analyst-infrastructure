@@ -21,9 +21,9 @@ module "vpc" {
   tags = var.tags
 }
 
-data "http" "myip" {
-  url = "https://ipv4.icanhazip.com"
-}
+#data "http" "myip" {
+#  url = "https://ipv4.icanhazip.com"
+#}
 
 module "security_group_bastion" {
   source = "./modules/security/"
@@ -116,7 +116,7 @@ resource "aws_db_instance" "mysql" {
   password               = "applicationuser"
   instance_class         = "db.t2.micro"
   storage_type           = "gp2"
-  allocated_storage      = "20"
+  allocated_storage      = "5"
   multi_az               = "false"
   db_subnet_group_name   = local.db_subnet_group
   publicly_accessible    = false
@@ -153,22 +153,16 @@ module "ec2_bastion" {
 }
 
 module "ec2_public" {
-  source = "./modules/ec2/"
-
-  name = "hollman-frontend-ec2"
-
-  ami           = "ami-06e46074ae430fba6"
-  instance_type = "t2.micro"
-
+  source                      = "./modules/ec2/"
+  name                        = "hollman-frontend-ec2"
+  ami                         = "ami-06e46074ae430fba6"
+  instance_type               = "t2.micro"
   subnet_ids                  = module.vpc.public_subnet_ids
   associate_public_ip_address = true
   user_data                   = var.user_data_frontend
-
-  vpc_security_group_ids = [module.security_group_frontend.sg_id]
-
-  key_name = "ramp-up"
-
-  tags = var.tags
+  vpc_security_group_ids      = [module.security_group_frontend.sg_id]
+  key_name                    = "ramp-up"
+  tags                        = var.tags
 }
 
 module "ec2_backend" {
@@ -225,24 +219,18 @@ EOF
 }
 
 module "load_balancer" {
-  source = "./modules/load_balancer/"
-
-  name = "hollman-frontend"
-
+  source             = "./modules/load_balancer/"
+  name               = "hollman-frontend"
   internal           = false
   load_balancer_type = "application"
   subnets            = module.vpc.public_subnet_ids
   security_groups    = [module.security_group_frontend_lb.sg_id]
-
-  vpc_id          = module.vpc.vpc_id
-  target_type     = "instance"
-  target_protocol = "HTTP"
-  target_port     = 3030
-
-  listener_protocol = "HTTP"
-  listener_port     = 80
-
-  target_ids = module.ec2_public.ec2_id
-
-  tags = var.tags
+  vpc_id             = module.vpc.vpc_id
+  target_type        = "instance"
+  target_protocol    = "HTTP"
+  target_port        = 3030
+  listener_protocol  = "HTTP"
+  listener_port      = 80
+  target_ids         = module.ec2_public.ec2_id
+  tags               = var.tags
 }
